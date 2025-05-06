@@ -1,0 +1,67 @@
+plugins {
+	id 'java'
+	id 'org.springframework.boot' version '3.4.5' // Spring Boot 플러그인
+	id 'io.spring.dependency-management' version '1.1.7' // 의존성 자동 관리
+}
+
+group = 'com.dev' // 패키지 기본 그룹명
+version = '0.0.1-SNAPSHOT' // 현재 프로젝트 버전
+
+java {
+	toolchain {
+		languageVersion = JavaLanguageVersion.of(17) // Java 17 사용
+	}
+}
+
+configurations {
+	compileOnly {
+		extendsFrom annotationProcessor // annotationProcessor를 compileOnly에 포함
+	}
+}
+
+repositories {
+	mavenCentral() // Maven 중앙 저장소 사용
+}
+
+dependencies {
+	// ✅ Core Spring Boot 기능
+	implementation 'org.springframework.boot:spring-boot-starter-web' // 웹 서버 및 REST API
+	implementation 'org.springframework.boot:spring-boot-starter-security' // Spring Security
+	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf' // Thymeleaf 템플릿 엔진
+	implementation 'org.springframework.boot:spring-boot-starter-validation' // Bean Validation
+	implementation 'org.springframework.boot:spring-boot-starter-data-jdbc' // JDBC 기반 DB 접근
+	implementation 'org.springframework.boot:spring-boot-starter-data-redis' // Redis 사용
+
+	// ✅ MyBatis 설정
+	implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:3.0.4' // MyBatis 연동
+	testImplementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter-test:3.0.4' // MyBatis 테스트
+
+	// ✅ Thymeleaf + Security 통합
+	implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity6'
+
+	// ✅ Lombok
+	compileOnly 'org.projectlombok:lombok' // 컴파일 시만 사용 (getter/setter 등)
+	annotationProcessor 'org.projectlombok:lombok' // Lombok 어노테이션 처리
+
+	// ✅ 개발용 도구
+	developmentOnly 'org.springframework.boot:spring-boot-devtools' // 자동 리스타트 등 dev용 도구
+
+	// ✅ MySQL 드라이버
+	runtimeOnly 'com.mysql:mysql-connector-j'
+
+	// ✅ AOP 기능 추가
+	implementation 'org.springframework.boot:spring-boot-starter-aop' // Aspect Oriented Programming
+
+	// ✅ 로깅 (Slf4j + Logback - Spring Boot 기본 포함이지만 명시적 추가 가능)
+	implementation 'org.slf4j:slf4j-api:2.0.13' // 로깅 API
+	// implementation 'ch.qos.logback:logback-classic:1.4.14' // Logback은 Spring Boot 기본으로 내장되어 있어 명시적 추가 생략 가능
+
+	// ✅ 테스트 관련
+	testImplementation 'org.springframework.boot:spring-boot-starter-test' // 기본 테스트 도구 (JUnit, Mockito 등 포함)
+	testImplementation 'org.springframework.security:spring-security-test' // Spring Security 전용 테스트 도구
+	testRuntimeOnly 'org.junit.platform:junit-platform-launcher' // JUnit 플랫폼 실행기
+}
+
+tasks.named('test') {
+	useJUnitPlatform() // JUnit 5 플랫폼 사용 설정
+}
